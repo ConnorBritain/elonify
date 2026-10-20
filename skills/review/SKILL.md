@@ -26,6 +26,8 @@ Copy the user's original ask word for word, from the message that started this w
 
 Do **not** summarise it. A summary written by the session that did the work is exactly the framing the critic exists to question.
 
+Then quote, also word for word, any **decisions the user has made since**: answers to questions, approvals of a plan, explicit choices such as "support all four harnesses". These are requirements with a named owner. A critic that doesn't see them will propose cutting what the user just decided to keep. Leave out the session's own proposals and reasoning.
+
 ## 3. Spawn the critic
 
 In Claude Code, launch the `elonify-critic` subagent with this prompt:
@@ -33,6 +35,9 @@ In Claude Code, launch the `elonify-critic` subagent with this prompt:
 ```
 ORIGINAL REQUEST (verbatim):
 <the request>
+
+USER DECISIONS SINCE (verbatim, if any):
+<decision> — <where it was made>
 
 TARGET:
 <path, range, or "working-tree diff">
