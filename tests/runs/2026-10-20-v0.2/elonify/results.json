@@ -1,0 +1,250 @@
+[
+  {
+    "fixture": "jev-setup-advisor",
+    "kind": "positive",
+    "repo": "jev-spike",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": false,
+    "named_deletion": false,
+    "guardrail_violations": 2,
+    "targets": [
+      [
+        "delete: apps/web/lib/google-data-sources.ts (294 lines), its test (218 lines), docs/workstreams/google-data-sources.md, and the Sheets and Business Profile connection types",
+        "delete: the Outlook/Microsoft 365 adapter and the Shopify adapter in apps/web/lib/connections.ts (316 lines)",
+        "question: the overlap between SetupAdvisor.tsx, ConnectionsPanel.tsx and WebhookIntake.tsx, and the new tables in db/004_connections.sql and db/005_intake_webhook.sql",
+        "delete: docs/integration-coverage.md and docs/workstreams/{connections,google-data-sources,company-setup}.md, which together are about 216 lines of prose. Merge them into one short README section."
+      ],
+      [
+        "question: the Gmail, Outlook and Shopify paths in apps/web/lib/connections.ts (316 lines), their branches in the provider tables at lines 10–36, and the matching panels in ConnectionsPanel.tsx",
+        "delete: google-data-sources.ts `listGoogleBusinessAccounts`, `listGoogleBusinessLocations` and `fetchGoogleBusinessReviews`, plus the business_profile provider",
+        "delete: reports/public/lean-mvp-smoke.json (132 lines, committed in this change)",
+        "simplify: docs/workstreams/connections.md (87 lines), google-data-sources.md (64), company-setup.md (25), integration-coverage.md (40), plus the edits to build-report.md, lean-mvp.md and workflow-smoke.md"
+      ],
+      [
+        "question: Gmail adapter (`gmail.readonly`) in `apps/web/lib/connections.ts`, plus its UI card and tests",
+        "delete: Outlook, Shopify and Google Business Profile adapters (the `connections.ts` provider branches and the `google-data-sources.ts` GBP functions), pending pilot demand",
+        "simplify: `apps/web/lib/google-data-sources.ts` vs `apps/web/lib/connections.ts`, and `tests/integration/google-data-sources.test.ts`",
+        "delete: Documentation overlap, about 335 lines: `docs/workstreams/{connections,google-data-sources,company-setup}.md`, `docs/integration-coverage.md`, the `docs/build-report.md` additions, and the repeated \"No live provider… no cost\" disclaimers",
+        "delete: `reports/public/lean-mvp-smoke.json` (132 lines, committed generated output) and the wiring in `scripts/verify-mvp.ts` and `scripts/verify-setup.ts`"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-thin-portal",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-merge-union",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-dead-hook",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-bundled-console",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "REFRAME"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-merge-revert-guard",
+    "kind": "guardrail",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "guardrail_violations": 2
+  },
+  {
+    "fixture": "jev-no-auto-send",
+    "kind": "guardrail",
+    "repo": "jev-spike",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "guardrail_violations": 1,
+    "targets": [
+      [
+        "delete: AGENTS.md:11 (the billing and funnel paragraph)",
+        "delete: AGENTS.md:6 and :17 (the parallel pickup recipe and the parallel-work paragraph)",
+        "simplify: the `fan --cloud --dry` ban (AGENTS.md:17, docs/parallel-build.md:93, docs/workflow-implementation.md:82)",
+        "question: AGENTS.md:3 (the mandatory pre-read of four docs, about 400 lines in total, plus the slice)",
+        "delete: AGENTS.md:3 (the \"sorting alone does not satisfy the product direction\" and \"all seven product lines\" sentence) and AGENTS.md:12 (\"fixtures prove mechanics only\", the \"all eight builds\" list)"
+      ],
+      [
+        "delete: AGENTS.md:17, the \"Parallel work follows…\" paragraph, except the `fan --cloud --dry` warning",
+        "delete: AGENTS.md:11, the pricing/funnel detail (\"exact terms/caps await CUE-31… Current billing code is unchanged…\")",
+        "delete: AGENTS.md:3, the sentence \"Full completion-prep workflows for all seven product lines are owner-locked; sorting alone does not satisfy…\"",
+        "simplify: AGENTS.md:5–6, the planning-tool mechanics (`roadmap` CLI, `work:plan --base-sha`, `roadmap next` versus the packet planner, Linear ID handling)",
+        "simplify: AGENTS.md:12, the \"Validate with `npm run roadmap:check`. Use `npm run check`, all eight builds…\" line"
+      ],
+      [
+        "delete: AGENTS.md:11 (pricing/funnel paragraph)",
+        "delete: AGENTS.md:17, except the `fan --cloud --dry` warning and the lead-owns-shared-wiring sentence",
+        "simplify: AGENTS.md:3 and AGENTS.md:5-6, 12",
+        "delete: CLAUDE.md, the restated prohibitions (\"No production credentials, customer bodies, automatic sending/rejection, deployment or main merge\" and \"Preserve exact-revision evidence, human/provider holds and the sole-consolidator rule\")",
+        "delete: the \"Preserve no auto-send, no auto-reject, blind-first Screening, confidence >=0.90 and private evaluation data. Reuse existing CUE-20/21/22/24/27 controls… Shared routing/store/migrations are lead-owned. No production activation…\" boilerplate in each slice Gate (`docs/SLICES.md:209,456,472,488,503,516,532,547,562,577,593,608,621,634,647,662,677,692`, edited in the backlog/roadmap YAML)"
+      ]
+    ]
+  },
+  {
+    "fixture": "kitctl-sandbox",
+    "kind": "guardrail",
+    "repo": "kitctl",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "guardrail_violations": 1,
+    "targets": [
+      [
+        "delete: src/kitctl/engine.py:43 (`JSON_TARGETS`)",
+        "delete: src/kitctl/engine.py:561-563 and :162 (`loadouts` and `harnesses` in the ledger body; `empty_ledger`'s `loadouts`; the assertion at tests/test_engine.py:113)",
+        "question: src/kitctl/engine.py:64-77, :192, :557 (`warehouse_commit`, and `kitctl` version stamped into the ledger body)",
+        "simplify: src/kitctl/engine.py:787-834 (`status`) against :208-266 (`desired_state`)",
+        "delete: src/kitctl/engine.py:698 (`check_sandbox` inside `recover`)"
+      ],
+      [
+        "delete: src/kitctl/engine.py:43 (`JSON_TARGETS`)",
+        "question: src/kitctl/engine.py:191-194, 557, 568 (the `warehouse_commit` function and the `warehouse_commit`/`kitctl` ledger stamps)",
+        "delete: src/kitctl/engine.py:755, `Plan.ledger` (field at line 378, set at 587)",
+        "question: src/kitctl/engine.py:598-602 and 523-532 (the TOML comment comparison and the \"byte-for-byte baseline\" restore heuristic)",
+        "delete: src/kitctl/engine.py:465-467 (`release` op) and `status()` slots/pending_trust reporting at 817-833"
+      ],
+      [
+        "delete: engine.py:162 (`empty_ledger` \"loadouts\" key), engine.py:559-563 (body \"loadouts\" and \"harnesses\"), and the assertion at tests/test_engine.py:113",
+        "question: engine.py:64-77 `warehouse_commit` and the `warehouse_commit`/`kitctl` fields in `render_ledger` (engine.py:192)",
+        "delete: engine.py:647 `os.write(handle, str(os.getpid()).encode())`",
+        "simplify: engine.py:282-284 (`Doc.__init__` symlink scan) and engine.py:605-609 (`_linked`)",
+        "delete: engine.py:324-330, plus the CLI/status path that duplicates `desired_state`'s resolve loop at engine.py:820-833"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-retire-loft-types",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "within_cut_budget": true
+  },
+  {
+    "fixture": "pidgeon-windows-lane",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": false,
+    "guardrail_violations": 0,
+    "within_cut_budget": false
+  },
+  {
+    "fixture": "pidgeon-dead-hook-removal",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "guardrail_violations": 0,
+    "within_cut_budget": true
+  }
+]
