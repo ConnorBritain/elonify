@@ -1,0 +1,400 @@
+[
+  {
+    "fixture": "jev-setup-advisor",
+    "kind": "positive",
+    "repo": "jev-spike",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "REFRAME"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": false,
+    "targets": [
+      [
+        "delete: Gmail and Outlook adapters, `gmailImport`/`outlookImport` and their callback routes, in `apps/web/lib/connections.ts:107-160`, plus their tests and docs",
+        "delete: Shopify adapter (`shopifyImport`, HMAC and shop validation, expiring-token rotation) in `connections.ts:25-93,160-183`",
+        "question: Google Business Profile adapter, `apps/web/lib/google-data-sources.ts` (294 lines, 44 mocked tests)",
+        "delete: `reports/public/lean-mvp-smoke.json` (132 lines), a generated artifact committed alongside the code",
+        "simplify: The docs: `docs/workstreams/{connections,google-data-sources,company-setup}.md` plus `docs/integration-coverage.md`, about 215 lines that restate each other, with the callback list and scope table also appearing in the code"
+      ],
+      [
+        "delete: the Business Profile code in `apps/web/lib/google-data-sources.ts` (`listGoogleBusinessAccounts`, `listGoogleBusinessLocations`, `fetchGoogleBusinessReviews`), its tests, its provider entry in `connections.ts`, and the `business.manage` scope",
+        "delete: the Gmail adapter, the Outlook adapter, and their branches in `apps/web/lib/connections.ts`, which is 316 lines in total. Cut Gmail first.",
+        "reorder: all native adapters, before any pilot measurement",
+        "question: `apps/web/lib/rulebook-advice.ts`, `packages/kernel/src/recommendations.ts`, `SetupAdvisor.tsx`, and the model-call route",
+        "delete: `scripts/verify-setup.ts`, `scripts/smoke-setup.ts`, `tests/integration/setup-smoke.test.ts`, and `reports/public/lean-mvp-smoke.json` (132 lines of generated output)"
+      ],
+      [
+        "question: `apps/web/lib/connections.ts` and `apps/web/lib/google-data-sources.ts`, specifically the Gmail, Outlook, Shopify and GBP adapters (about 610 lines, plus `db/004_connections.sql`, `ConnectionsPanel.tsx` and about 485 lines of tests)",
+        "delete: the Gmail and GBP \"setup screen\" entries and the `GMAIL_CLIENT_*` split-credential fallback logic (`.env.example`, connections.md \"Runtime configuration\")",
+        "delete: the Cuevani-invented throttles and `has_more` and `nextPageToken` pagination plumbing for GBP resources",
+        "delete: `docs/integration-coverage.md`, `docs/workstreams/google-data-sources.md` and `docs/workstreams/connections.md`, collapsed into one doc. Also `docs/build-report.md` and `docs/workstreams/company-setup.md`",
+        "delete: `reports/public/lean-mvp-smoke.json`"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-thin-portal",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "REFRAME",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true
+  },
+  {
+    "fixture": "pidgeon-merge-union",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true
+  },
+  {
+    "fixture": "pidgeon-dead-hook",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true
+  },
+  {
+    "fixture": "pidgeon-bundled-console",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "REFRAME",
+      "REFRAME",
+      "REFRAME"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true
+  },
+  {
+    "fixture": "pidgeon-merge-revert-guard",
+    "kind": "guardrail",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "guardrail_violations": 2
+  },
+  {
+    "fixture": "jev-no-auto-send",
+    "kind": "guardrail",
+    "repo": "jev-spike",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "guardrail_violations": 1,
+    "targets": [
+      [
+        "delete: AGENTS.md:17 (the whole \"Parallel work follows…\" paragraph, except one pointer)",
+        "delete: AGENTS.md:11 (pricing/funnel/annual-price rules)",
+        "simplify: AGENTS.md:3 plus 15 (reading list and tooling disclaimer)",
+        "delete: AGENTS.md:12 and 13 (check commands and reporting rules, partly)",
+        "question: AGENTS.md:9 \"Screening … borderline-only routing unless the owner explicitly resolves the documented policy conflict\""
+      ],
+      [
+        "delete: AGENTS.md:17, the whole \"Parallel work follows…\" paragraph except the `fan --cloud --dry` warning",
+        "simplify: AGENTS.md:6, the `work:plan` flag syntax and the `roadmap next` caveat",
+        "delete: AGENTS.md:11, the status and terms parts of the pricing line (\"Current billing code is unchanged until that implementation\", \"exact terms/caps await CUE-31\")",
+        "delete: AGENTS.md:3 and :12, the reading-list sentence and the \"all eight builds\" count",
+        "delete: CLAUDE.md, the duplicated restatement (\"No production credentials… automatic sending/rejection, deployment or main merge\", \"sole-consolidator rule\")"
+      ],
+      [
+        "delete: AGENTS.md:17, the first sentence (\"Parallel work follows docs/parallel-build.md: one branch/worktree… Workers report leftovers in the PR…\")",
+        "simplify: AGENTS.md:11, the pricing and funnel sentence",
+        "delete: AGENTS.md:12, the `npm run check` and \"all eight builds\" list",
+        "question: AGENTS.md:3, the mandatory reading of four docs plus the slice before every task",
+        "delete: AGENTS.md:6, the `roadmap next` aside and the planner-flag detail"
+      ]
+    ]
+  },
+  {
+    "fixture": "kitctl-sandbox",
+    "kind": "guardrail",
+    "repo": "kitctl",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": false,
+    "guardrail_violations": 0,
+    "targets": [
+      [
+        "delete: src/kitctl/engine.py:43 `JSON_TARGETS`",
+        "question: engine.py:518-532 plus `_comments` (598-602): the \"byte-for-byte baseline\" restore heuristic, in the `make_plan` path",
+        "simplify: engine.py:282-285 and 605-609 `_linked`: the same symlink-parent check written twice",
+        "simplify: engine.py:787-834 `status` re-implementing resolve/loadout iteration, and the `Doc` read at 792"
+      ],
+      [
+        "delete: `warehouse_commit()` (engine.py:64-77), its `subprocess` import, the `commit` parameter of `render_ledger` (191), and the call in `make_plan` (557)",
+        "simplify: `Doc.__init__` symlink check (engine.py:282-284) and `_linked` (605-609)"
+      ],
+      [
+        "delete: src/kitctl/engine.py:43 `JSON_TARGETS`",
+        "simplify: src/kitctl/engine.py:282-284 (`Doc.__init__`) and `_linked` at 605-609",
+        "delete: src/kitctl/engine.py:647 `os.write(handle, str(os.getpid()).encode())`",
+        "question: src/kitctl/engine.py:230-234 (directory effects) and `Desired.gaps`/`setup` pass-through",
+        "question: src/kitctl/engine.py:157-159, 173-176 (ledger `checksum`)"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-retire-loft-types",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "within_cut_budget": true
+  },
+  {
+    "fixture": "pidgeon-windows-lane",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "guardrail_violations": 1,
+    "within_cut_budget": false
+  },
+  {
+    "fixture": "pidgeon-dead-hook-removal",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "guardrail_violations": 0,
+    "within_cut_budget": true
+  },
+  {
+    "fixture": "jev-fronts",
+    "kind": "live",
+    "repo": "jev-spike",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "targets": [
+      [
+        "simplify: apps/fronts/*, 77 near-identical files across 7 dirs (11 each, 343 lines total)",
+        "question: apps/fronts/*/app/{login,onboarding,queue}/page.tsx, and `StandaloneWorkspace` in packages/front-template",
+        "reorder: scripts/build-fronts.mjs:2-3, and the `build:fronts` step in `check`/CI and scripts/lib/work-plan.mjs:10",
+        "delete: the \"independently deployable\" claim, specifically the per-front `next.config.ts` and `package.json` workspace entries (7 `package.json` files, with 7 `@jev/front-*` workspaces in root package.json `apps/fronts/*`)"
+      ]
+    ]
+  },
+  {
+    "fixture": "jev-workflow-api",
+    "kind": "live",
+    "repo": "jev-spike",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "PROCEED"
+    ],
+    "grammar": true,
+    "targets": [
+      [
+        "delete: apps/web/lib/workflow-api.ts:14-28 (`WORKFLOW_API_SCHEMA`)",
+        "question: apps/web/lib/workflow-api.ts `runJob` and `workflow_api_job.credential_hash`",
+        "simplify: apps/web/lib/workflow-api.ts `handle()`, double authorization on every call"
+      ]
+    ]
+  },
+  {
+    "fixture": "jev-direction",
+    "kind": "live",
+    "repo": "jev-spike",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "targets": [
+      [
+        "question: line 3 and line 133, \"Build all seven… does not reopen this direction… Nobody should ask whether we are still only building sorting\"",
+        "delete: Seven \"Acceptance scenario\" paragraphs and \"Repeat value / Measure…\" lines, plus the Stickiness metrics (lines 127 and 39–121)",
+        "delete: Lines 11 and 133, \"API/MCP exposes the same product and entitlements as the UI\" and \"API/MCP parity\" listed as Locked",
+        "delete: Lines 137–141, \"Mobile… first-class daily-work surface across all seven product lines\"",
+        "delete: Seven \"Flow\" sections with writeback to Clio, Gorgias/Shopify, CRM and ATS (sections 2, 3, 4, 6)"
+      ]
+    ]
+  },
+  {
+    "fixture": "jev-parallel-build",
+    "kind": "live",
+    "repo": "jev-spike",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "targets": [
+      [
+        "delete: docs/parallel-build.md:88-99 (the upstream `@connorbritain/roadmap@0.7.2` bug catalog) and the model-selection prose at :59-61",
+        "delete: docs/parallel-build.md:15-25 (lane table with suggested clients and models) and :101-103 (official setup references)",
+        "delete: the packet-file path of `work:plan` (`--select`, `--out .roadmap/packets/run-001`, the traversal/symlink/overwrite refusals, `scripts/plan-work.mjs`) and the placeholder-SHA instruction",
+        "question: the 5-step review/consolidation sequence (:78-84) and the per-change full gate (`npm run check` + web build + all seven front builds + frozen evals)",
+        "delete: the three-way claim/state sync (roadmap.yaml, Linear \"projection/proposal inbox\", `docs/roadmap/TRACKER.md` native IDs/cycles; docs/parallel-build.md:9-11, 73, 84)"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-agent-docs",
+    "kind": "live",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": false
+  },
+  {
+    "fixture": "pidgeon-ci-workflows",
+    "kind": "live",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": true
+  },
+  {
+    "fixture": "pidgeon-first-run",
+    "kind": "live",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "REFRAME"
+    ],
+    "grammar": true
+  },
+  {
+    "fixture": "kitctl-plan",
+    "kind": "live",
+    "repo": "kitctl",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "targets": [
+      [
+        "reorder: PLAN.md Delivery sequence. The Forge row (M4 and M5, `scout.py` 516 lines, `forge.py` 603 lines, docs/forge.md 134 lines, `examples/warehouse`), and Phase 7 Capture.",
+        "delete: the \"Phase 4 Inventory\" remainder (usage adapters, drift matrix) and the \"Phase 5 Triage\" ceremony.",
+        "delete: `schema_version: 1` read path in `model.py` and `resolve.py`, plus the corresponding sentence in docs/design.md and docs/model.md.",
+        "question: the pilot's \"two findings to resolve before any apply\" (docs/pilot-brand-studio.md) and the owner authorization gate.",
+        "simplify: PLAN.md itself. The Preflight evidence table, the Bootstrap outcome, and the per-phase \"M#\" status prose."
+      ]
+    ]
+  },
+  {
+    "fixture": "kitctl-cli",
+    "kind": "live",
+    "repo": "kitctl",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 1,
+    "verdicts": [
+      "CUT FIRST"
+    ],
+    "grammar": false,
+    "targets": [
+      [
+        "delete: cli.py:128-131, the shared loop that gives `forge new` the `--cache` and `--json` flags",
+        "question: `--dry-run` on apply, use, off and eject (cli.py:78, 321, 333, 310)",
+        "simplify: `validate [path]` (cli.py:38-40)",
+        "question: `resolve --observed FILE` (cli.py:48-53, 193-203)"
+      ]
+    ]
+  }
+]

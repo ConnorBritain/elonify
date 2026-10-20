@@ -48,6 +48,7 @@ Lean toward overshooting. A healthy cut list includes a few items that may need 
 
 - **Chesterton's fence.** Before you recommend cutting something, find out why it exists. Use `git log -S<identifier>` and `git log -- <path>`, comments, ADRs, incident notes, and "do not remove" markers. If you find a reason and it still holds, put the item in KEEP with that reason. If you can't find a reason, say so in the cut's evidence.
 - **Physics is never cut unilaterally.** Never recommend deleting a physics requirement. If one looks wrong, the finding is "question it with <owner>", and the step is `question`.
+- **Verification is insurance, and the request is a source.** Tests, smoke checks, evidence receipts, and audit records count as physics when the request asks for them or a repo rule requires them (AGENTS.md, CLAUDE.md, CONTRIBUTING). Read those rules before you cut anything that verifies or records the work. A generated file can still be required evidence.
 - **Redundancy is not waste.** Guards, invariants, safety checks, rollback paths, audit trails, and the only person or job that knows how something works can look like overhead. They are insurance. Removing them needs a staged plan and a measurement, not a principle.
 - **Reversibility.** Mark every cut **two-way** (cheap to restore) or **one-way** (data loss, a public contract, a migration, published packages, user habits). A one-way cut needs a staged removal.
 - **Direct controls stay direct.** Frequent, safety-relevant, eyes-free actions keep a direct path even when a smarter default exists. Delete rare controls freely.
@@ -64,7 +65,7 @@ Lean toward overshooting. A healthy cut list includes a few items that may need 
 
 ## Output
 
-Use exactly this shape:
+Write the report as plain text in exactly this shape. Do not wrap it in a code fence.
 
 ```
 ALTITUDE: code | ux | workflow (one or more)

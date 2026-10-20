@@ -1,0 +1,221 @@
+{
+ "method": "One general-purpose judge read all 24 reports (4 positive diffs x 2 critics x 3 draws) under opaque ids with reviewer names masked, against GROUND_TRUTH only, and answered: does the report recommend removing the thing later removed (yes/partial/no), at what finding rank, and how many clearly wrong removal recommendations it makes. Quotes omitted because one repo is private.",
+ "rows": [
+  {
+   "fixture": "jev-setup-advisor",
+   "critic": "architecture-reviewer",
+   "draw": 1,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": "no",
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "jev-setup-advisor",
+   "critic": "architecture-reviewer",
+   "draw": 2,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": "no",
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "jev-setup-advisor",
+   "critic": "architecture-reviewer",
+   "draw": 3,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": "no",
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "jev-setup-advisor",
+   "critic": "elonify-critic",
+   "draw": 1,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": "yes",
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "jev-setup-advisor",
+   "critic": "elonify-critic",
+   "draw": 2,
+   "removal": "partial",
+   "rank": 4,
+   "adapters_cut": "yes",
+   "bogus_cuts": 1
+  },
+  {
+   "fixture": "jev-setup-advisor",
+   "critic": "elonify-critic",
+   "draw": 3,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": "yes",
+   "bogus_cuts": 1
+  },
+  {
+   "fixture": "pidgeon-dead-hook",
+   "critic": "architecture-reviewer",
+   "draw": 1,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-dead-hook",
+   "critic": "architecture-reviewer",
+   "draw": 2,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-dead-hook",
+   "critic": "architecture-reviewer",
+   "draw": 3,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-dead-hook",
+   "critic": "elonify-critic",
+   "draw": 1,
+   "removal": "partial",
+   "rank": 1,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-dead-hook",
+   "critic": "elonify-critic",
+   "draw": 2,
+   "removal": "yes",
+   "rank": 2,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-dead-hook",
+   "critic": "elonify-critic",
+   "draw": 3,
+   "removal": "yes",
+   "rank": 1,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-merge-union",
+   "critic": "architecture-reviewer",
+   "draw": 1,
+   "removal": "partial",
+   "rank": 9,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-merge-union",
+   "critic": "architecture-reviewer",
+   "draw": 2,
+   "removal": "yes",
+   "rank": 9,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-merge-union",
+   "critic": "architecture-reviewer",
+   "draw": 3,
+   "removal": "yes",
+   "rank": 6,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-merge-union",
+   "critic": "elonify-critic",
+   "draw": 1,
+   "removal": "partial",
+   "rank": 1,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-merge-union",
+   "critic": "elonify-critic",
+   "draw": 2,
+   "removal": "partial",
+   "rank": 1,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-merge-union",
+   "critic": "elonify-critic",
+   "draw": 3,
+   "removal": "yes",
+   "rank": 2,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-thin-portal",
+   "critic": "architecture-reviewer",
+   "draw": 1,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-thin-portal",
+   "critic": "architecture-reviewer",
+   "draw": 2,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-thin-portal",
+   "critic": "architecture-reviewer",
+   "draw": 3,
+   "removal": "no",
+   "rank": null,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-thin-portal",
+   "critic": "elonify-critic",
+   "draw": 1,
+   "removal": "partial",
+   "rank": 2,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-thin-portal",
+   "critic": "elonify-critic",
+   "draw": 2,
+   "removal": "partial",
+   "rank": 1,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  },
+  {
+   "fixture": "pidgeon-thin-portal",
+   "critic": "elonify-critic",
+   "draw": 3,
+   "removal": "yes",
+   "rank": 2,
+   "adapters_cut": null,
+   "bogus_cuts": 0
+  }
+ ]
+}

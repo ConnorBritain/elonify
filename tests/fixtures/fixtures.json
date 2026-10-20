@@ -41,8 +41,15 @@
           "recommendation",
           "advisor",
           "rulebook.?(advice|proposal)"
+        ],
+        "must_not_cut": [
+          "verify-setup",
+          "smoke-setup",
+          "setup-smoke",
+          "reports/public"
         ]
-      }
+      },
+      "guardrail_note": "Added after the v0.1 audit: the request asks for protected setup verification and AGENTS.md requires exact-revision evidence, so deleting them is a violation."
     },
     {
       "name": "pidgeon-thin-portal",
@@ -138,8 +145,9 @@
       "ground_truth": "Replaying history shows the guard would have caught a real silent revert (#2104); it is still live and load-bearing.",
       "expect": {
         "must_not_cut": [
-          "merge-revert-guard",
-          "revert.?guard"
+          "merge-revert-guard`?\\s*(CI )?(job)?`?\\s*(\\(|$)",
+          "check-merge-revert\\.mjs`?\\s*(\\(|$)",
+          "^(the )?(whole )?(guard|job)\\s*(\\(|$)"
         ]
       }
     },

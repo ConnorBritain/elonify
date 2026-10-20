@@ -1,0 +1,75 @@
+[
+  {
+    "fixture": "jev-setup-advisor",
+    "kind": "positive",
+    "repo": "jev-spike",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "SHIP WITH FIXES",
+      "SHIP WITH FIXES",
+      "SHIP WITH FIXES"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true,
+    "targets": [
+      [],
+      [],
+      []
+    ]
+  },
+  {
+    "fixture": "pidgeon-thin-portal",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "DO NOT SHIP",
+      "DO NOT SHIP",
+      "DO NOT SHIP"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-merge-union",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "SHIP WITH FIXES",
+      "SHIP WITH FIXES",
+      "SHIP WITH FIXES"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-dead-hook",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "DO NOT SHIP",
+      "SHIP WITH FIXES",
+      "DO NOT SHIP"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": false
+  }
+]

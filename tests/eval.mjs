@@ -185,18 +185,42 @@ function grammarOk(text) {
   return /^VERDICT: (PROCEED|CUT FIRST|REFRAME)$/.test(last);
 }
 
-function scoreDraw(f, text) {
-  const verdict = parseVerdict(text);
-  const cuts = parseCuts(text);
+const REMOVES = /\b(delete|deleting|remove|removing|drop|dropping|revert|cut)\b/i;
+
+/** architecture-reviewer reports: numbered findings and a SHIP / SHIP WITH FIXES / DO NOT SHIP verdict. */
+function archItems(text) {
+  return text.split(/^\s*\**\d+[.)]\s+/m).slice(1).map((s) => ({ step: REMOVES.test(s) ? "delete" : "fix", target: s.split("\n")[0], text: s }));
+}
+
+function scoreDraw(f, text, critic) {
   const e = f.expect || {};
   const any = (patterns, s) => patterns.some((p) => new RegExp(p, "i").test(s));
+  if (critic === "arch") {
+    const verdict = [...text.matchAll(/(DO NOT SHIP|SHIP WITH FIXES|SHIP)\b/g)].pop()?.[1] ?? null;
+    const items = archItems(text);
+    return {
+      verdict,
+      grammar: !!verdict,
+      cuts: items.length,
+      verdict_ok: e.verdict ? verdict !== null && verdict !== "SHIP" : undefined,
+      cut_hit: e.cut_mentions ? items.some((c) => any(e.cut_mentions, c.text)) : undefined,
+      named_deletion: e.cut_mentions ? items.some((c) => any(e.cut_mentions, c.text) && REMOVES.test(c.text)) : undefined,
+      targets: [],
+    };
+  }
+  const verdict = parseVerdict(text);
+  const cuts = parseCuts(text);
   const r = { verdict, grammar: grammarOk(text), cuts: cuts.length };
   if (e.verdict) r.verdict_ok = e.verdict.split("|").includes(verdict);
-  if (e.cut_mentions) r.cut_hit = cuts.some((c) => any(e.cut_mentions, c.text));
+  if (e.cut_mentions) {
+    r.cut_hit = cuts.some((c) => any(e.cut_mentions, c.text));
+    r.named_deletion = cuts.some((c) => any(e.cut_mentions, c.text) && (c.step === "delete" || REMOVES.test(c.text)));
+  }
   if (e.must_not_cut) {
     r.guardrail_violations = cuts.filter(
-      // Consolidating or questioning a guard is not removing it; only a delete counts.
-      (c) => c.step === "delete" && any(e.must_not_cut, c.target),
+      // Consolidating or questioning a guard is not removing it; only a delete counts, and
+      // deleting a comment about a guard or a duplicate copy of it leaves the guard in place.
+      (c) => c.step === "delete" && any(e.must_not_cut, c.target) && !NOT_REMOVAL.test(c.target),
     ).length;
   }
   if (e.max_cuts !== undefined) r.within_cut_budget = cuts.length <= e.max_cuts;
@@ -204,6 +228,7 @@ function scoreDraw(f, text) {
   return r;
 }
 
+const NOT_REMOVAL = /\bcomments?\b|duplicat|restate|restatement|\bcopy\b|pointer/i;
 const majority = (vals) => vals.filter(Boolean).length * 2 > vals.length;
 
 function collect(runId, opts) {
@@ -218,21 +243,24 @@ function collect(runId, opts) {
     const byModel = {};
     for (const file of files.sort()) {
       const model = file.split("-")[1];
-      (byModel[model] ??= []).push(scoreDraw(f, readFileSync(join(caseDir, file), "utf8")));
+      (byModel[model] ??= []).push(scoreDraw(f, readFileSync(join(caseDir, file), "utf8"), critic));
     }
     for (const [model, draws] of Object.entries(byModel)) {
       const summary = { fixture: f.name, kind: f.kind, repo: f.repo, altitude: f.altitude, model, draws: draws.length };
       summary.verdicts = draws.map((d) => d.verdict);
       summary.grammar = draws.every((d) => d.grammar);
       if (f.expect?.verdict) summary.verdict_ok = majority(draws.map((d) => d.verdict_ok));
-      if (f.expect?.cut_mentions) summary.cut_hit = majority(draws.map((d) => d.cut_hit));
+      if (f.expect?.cut_mentions) {
+        summary.cut_hit = majority(draws.map((d) => d.cut_hit));
+        summary.named_deletion = majority(draws.map((d) => d.named_deletion));
+      }
       if (f.expect?.must_not_cut) summary.guardrail_violations = draws.reduce((n, d) => n + d.guardrail_violations, 0);
       if (f.expect?.max_cuts !== undefined) summary.within_cut_budget = majority(draws.map((d) => d.within_cut_budget));
       if (!isPrivate(f.repo)) summary.targets = draws.map((d) => d.targets);
       results.push(summary);
     }
   }
-  const out = join(RUNS, `${runId}-${critic}`);
+  const out = join(RUNS, runId, critic);
   mkdirSync(out, { recursive: true });
   writeFileSync(join(out, "results.json"), JSON.stringify(results, null, 2) + "\n");
 
@@ -247,14 +275,15 @@ function collect(runId, opts) {
       "",
       `- positives caught (majority CUT FIRST/REFRAME with the named cut): ${pos.filter((r) => r.verdict_ok && r.cut_hit).length} / ${pos.length}`,
       `- positives with the named cut, any verdict: ${pos.filter((r) => r.cut_hit).length} / ${pos.length}`,
+      `- positives where the named thing is proposed for removal (parity metric across critics): ${pos.filter((r) => r.named_deletion).length} / ${pos.length}`,
       `- guardrail violations (all draws): ${guard.reduce((n, r) => n + r.guardrail_violations, 0)}`,
       `- clean negatives PROCEED by majority: ${clean.filter((r) => r.verdict_ok).length} / ${clean.length}`,
       `- verdict grammar: ${rs.filter((r) => r.grammar).length} / ${rs.length} fixtures, every draw`,
       "",
-      "| fixture | kind | altitude | verdicts | expected verdict | named cut | guardrail violations |",
-      "|---|---|---|---|---|---|---|",
+      "| fixture | kind | altitude | verdicts | expected verdict | named cut | named removal | guardrail violations |",
+      "|---|---|---|---|---|---|---|---|",
       ...rs.map((r) =>
-        `| ${r.fixture} | ${r.kind} | ${r.altitude ?? ""} | ${r.verdicts.join(", ")} | ${fmt(r.verdict_ok)} | ${fmt(r.cut_hit)} | ${r.guardrail_violations ?? ""} |`,
+        `| ${r.fixture} | ${r.kind} | ${r.altitude ?? ""} | ${r.verdicts.join(", ")} | ${fmt(r.verdict_ok)} | ${fmt(r.cut_hit)} | ${fmt(r.named_deletion)} | ${r.guardrail_violations ?? ""} |`,
       ),
       "",
     );
