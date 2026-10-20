@@ -20,5 +20,7 @@ All notable changes are recorded here, following [Keep a Changelog](https://keep
 - Packaging for Claude Code, Cursor, Codex and AGENTS.md harnesses, plus wiring snippets.
 - `PRINCIPLES.md`: the sourced canon, with a provenance tag on every quote.
 - `tests/selftest.mjs`: manifests, prompt/wiring parity, verdict grammar, and every hook path.
-- `tests/eval.mjs` and fixtures against jev-spike, pidgeon and kitctl, with a pre-registered
-  gate.
+- `tests/eval.mjs` and fixtures against jev-spike, pidgeon and kitctl, with pre-registered
+  gates. The prompt that ships is v0.3, the first to pass: positives 3/5, guardrail
+  violations 0, clean 3/3, grammar 33/33.
+- The review skill passes the user's later decisions verbatim alongside the original request.

@@ -131,15 +131,15 @@ never calls a model. If the hook itself fails, it does not block.
 ## Cost
 
 One subagent run per review. It reads the plan or diff, greps, and checks `git log` to test
-fences. In the eval, a sonnet review of a mid-sized diff took under a minute to a few minutes.
-Skip trivial turns.
+fences. In the v0.3 eval, a sonnet review took a median of 28 s, and the slowest took 70 s, on
+diffs up to about 2.6k lines and repos up to about 25k files. Skip trivial turns.
 
 ## Evaluation
 
 See [`tests/runs/2026-10-20-v0.1/`](tests/runs/2026-10-20-v0.1/). The gate (`GATE.md`) was
 registered before any results.
 
-There are 20 fixtures across three real repos. The scored fixtures come in three kinds:
+There are 20 fixtures across three real repos (jev-spike, pidgeon and kitctl). The scored fixtures come in three kinds:
 
 - **Positives:** the team itself later deleted what the target added, which gives ground truth.
 - **Guardrails:** load-bearing guards that look like overhead.
@@ -148,7 +148,38 @@ There are 20 fixtures across three real repos. The scored fixtures come in three
 The live fixtures are human-judged audits of the current repos. `architecture-reviewer` runs on
 the same positive diffs as an echo baseline.
 
-RESULTS_PLACEHOLDER
+**Shipped prompt (v0.3, sonnet, 33 draws). Every number below comes from `eval.mjs collect`
+plus a hand audit:**
+
+| Criterion | Bar | Result |
+|---|---|---|
+| Positives: `CUT FIRST`/`REFRAME` naming the thing the team later deleted (majority of 3) | ≥ 3 / 5 | **3 / 5** |
+| Guardrail violations: a load-bearing guard proposed for deletion | 0 | **0** |
+| Clean negatives: `PROCEED` | ≥ 2 / 3 | **3 / 3** |
+| Verdict grammar | 100% | **33 / 33** |
+
+**Against the existing critic** (v0.1, blinded judge, same 4 positive diffs × 3 draws): elonify
+recommended removing, or explicitly questioned, the later-deleted thing in **10 of 12** draws,
+usually as finding #1–2. `architecture-reviewer` did so in **3 of 12**, all on one diff and
+ranked as a nit. On the other three diffs it proposed **fixing** what the team later
+**deleted**: "point the hook at the right .sln", "wire the customer ID".
+
+**How it got here.** Each version was gated before results, and each failure was fixed at its
+root:
+
+- **v0.1** failed on format: fenced reports.
+- **v0.2** failed on guardrails. Two draws cut committed evidence "if nothing requires it", and
+  the repo's AGENTS.md required it.
+- **v0.3** passes. Its operational guardrail is to search the repo rules and quote them before
+  cutting verification, with no conditional cuts.
+
+That traded some recall (4/5 → 3/5) for zero guardrail violations. See
+[`tests/runs/README.md`](tests/runs/README.md).
+
+**Dogfood.** elonify reviewed this repo. Given only the original request, it proposed cutting
+the Stop hook and the multi-harness packaging, which the user had explicitly chosen. That is why
+`/elonify:review` now passes later user decisions to the critic verbatim
+([`DOGFOOD.md`](tests/runs/2026-10-20-v0.2/DOGFOOD.md)).
 
 ## Known limits
 

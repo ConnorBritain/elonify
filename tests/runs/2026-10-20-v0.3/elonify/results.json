@@ -1,0 +1,238 @@
+[
+  {
+    "fixture": "jev-setup-advisor",
+    "kind": "positive",
+    "repo": "jev-spike",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": false,
+    "cut_hit": false,
+    "named_deletion": false,
+    "guardrail_violations": 0,
+    "targets": [
+      [
+        "question: apps/web/lib/connections.ts (Gmail and Business Profile adapters), apps/web/lib/google-data-sources.ts:Business Profile functions, `/business_profile/resources` route",
+        "delete: docs/integration-coverage.md, docs/workstreams/google-data-sources.md, docs/build-report.md additions",
+        "question: reports/public/lean-mvp-smoke.json (132 lines) and the apps/web/public/verification/setup-smoke.json that verify-setup.ts writes"
+      ],
+      [
+        "question: the Gmail adapter, `apps/web/lib/connections.ts:126-140`, and the `gmail` entry in `PROVIDERS` and in `db/004_connections.sql`",
+        "question: the Business Profile adapter in `apps/web/lib/google-data-sources.ts`, plus its tests in `tests/integration/google-data-sources.test.ts`",
+        "question: the Shopify and Outlook adapters, `apps/web/lib/connections.ts:145-175`"
+      ],
+      [
+        "question: apps/web/lib/connections.ts (Shopify and Business Profile paths, lines ~85-90, 160-176, 241+), plus apps/web/lib/google-data-sources.ts (294 lines, mostly Business Profile account and location resources)",
+        "question: docs/workstreams/connections.md (87 lines), google-data-sources.md (64), company-setup.md (25), integration-coverage.md (40), plus the additions to build-report.md, lean-mvp.md and workflow-smoke.md"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-thin-portal",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-merge-union",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "CUT FIRST",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": false,
+    "cut_hit": true,
+    "named_deletion": false
+  },
+  {
+    "fixture": "pidgeon-dead-hook",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-bundled-console",
+    "kind": "positive",
+    "repo": "pidgeon",
+    "altitude": "ux",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "cut_hit": true,
+    "named_deletion": true
+  },
+  {
+    "fixture": "pidgeon-merge-revert-guard",
+    "kind": "guardrail",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "guardrail_violations": 0
+  },
+  {
+    "fixture": "jev-no-auto-send",
+    "kind": "guardrail",
+    "repo": "jev-spike",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "CUT FIRST",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "guardrail_violations": 0,
+    "targets": [
+      [
+        "delete: AGENTS.md:17, the paragraph repeating parallel-build.md (one branch/worktree per claimed slice, three builders, exact-commit review, one consolidator, lead owns shared wiring, workers report leftovers). Also the parallel-pickup mechanics in line 6, and the \"leftovers in backlog\" part of line 7, which line 17 restates.",
+        "delete: AGENTS.md:17, the sentence \"Do not use upstream `fan --cloud --dry` as a preview...\"",
+        "question: AGENTS.md:3, the mandatory read list of four docs plus the slice, and the statement that \"sorting alone does not satisfy the product direction\"",
+        "simplify: AGENTS.md:12, the \"all eight builds\" claim",
+        "delete: AGENTS.md:11, the billing and funnel narrative (\"Owner-selected funnel is bounded free real-work trial, then setup plus subscription... Current billing code is unchanged...\")"
+      ],
+      [
+        "delete: AGENTS.md:11 (pricing and funnel bullet)",
+        "delete: AGENTS.md:6 and :17 (the `work:plan` invocation, \"three builders by default\", the `roadmap next` comparison, the `gated_on` explanation, the shared-wiring ownership list)",
+        "delete: AGENTS.md:8 (the merge-gate details: \"one workstream at a time\", \"full tests, relevant frozen evals, contract and secret checks\", \"A failed model bar remains failed\") and line 12 (\"all eight builds\")",
+        "question: AGENTS.md:3 (the mandatory read list of four docs plus the slice, and \"sorting alone does not satisfy the product direction\")",
+        "simplify: AGENTS.md vs CLAUDE.md (two entry files with overlapping rules)"
+      ],
+      [
+        "delete: AGENTS.md:17, the parallel-build paragraph (the one-branch-per-slice, three-builders and consolidator restatement)",
+        "simplify: AGENTS.md:6, the work:plan command detail and the `roadmap next` comparison",
+        "simplify: AGENTS.md:11, the pricing and funnel paragraph",
+        "question: AGENTS.md:3, the mandatory four-doc preread"
+      ]
+    ]
+  },
+  {
+    "fixture": "kitctl-sandbox",
+    "kind": "guardrail",
+    "repo": "kitctl",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "CUT FIRST",
+      "CUT FIRST"
+    ],
+    "grammar": true,
+    "guardrail_violations": 0,
+    "targets": [
+      [
+        "delete: src/kitctl/engine.py:43 (`JSON_TARGETS`)",
+        "simplify: src/kitctl/engine.py:282-284 and :605-609 (`Doc.__init__` and `_linked`)"
+      ],
+      [
+        "delete: src/kitctl/engine.py:43 (`JSON_TARGETS`)",
+        "delete: src/kitctl/engine.py:64-77 (`warehouse_commit`), plus the `commit` parameter of `render_ledger` and its call at :557",
+        "question: src/kitctl/engine.py:518-532 and :598-602 (preimage store, `_comments`, `parsed` baseline-equality heuristic, `drop_preimages`)"
+      ],
+      [
+        "delete: engine.py:64-77 `warehouse_commit`, engine.py:192 (`warehouse_commit` and `kitctl` keys in the ledger body), engine.py:557 and the `commit` parameter to `render_ledger`",
+        "delete: engine.py:230-234, the `effect[\"format\"] == \"directory\"` branch in `desired_state`",
+        "question: engine.py:465-467 `release` op, and the `preexisting` and `adopt` machinery (engine.py:490-493, 511, 559)",
+        "simplify: engine.py:843-847 (the `eject` dependency scan) and engine.py:235 (the `${plugin:` check in `desired_state`)"
+      ]
+    ]
+  },
+  {
+    "fixture": "pidgeon-retire-loft-types",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "code",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "within_cut_budget": true
+  },
+  {
+    "fixture": "pidgeon-windows-lane",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "guardrail_violations": 0,
+    "within_cut_budget": true
+  },
+  {
+    "fixture": "pidgeon-dead-hook-removal",
+    "kind": "clean",
+    "repo": "pidgeon",
+    "altitude": "workflow",
+    "model": "sonnet",
+    "draws": 3,
+    "verdicts": [
+      "PROCEED",
+      "PROCEED",
+      "PROCEED"
+    ],
+    "grammar": true,
+    "verdict_ok": true,
+    "guardrail_violations": 0,
+    "within_cut_budget": true
+  }
+]
