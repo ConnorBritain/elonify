@@ -1,0 +1,15 @@
+{
+  "name": "elonify",
+  "owner": { "name": "Connor England", "url": "https://github.com/ConnorBritain" },
+  "metadata": { "description": "Musk's algorithm as a clean-context critic for plans, diffs, UX, and workflows." },
+  "plugins": [
+    {
+      "name": "elonify",
+      "description": "A first-principles critic for decisions and diffs: questions every requirement back to a named owner, then deletes before it simplifies, accelerates, or automates (Musk's algorithm, in order). Works before building (plans) and after (diffs), at code, UI/UX, and workflow altitude. Optional Stop hook.",
+      "source": "./",
+      "version": "0.1.0",
+      "category": "code-quality",
+      "tags": ["first-principles","simplicity","deletion","scope","yagni","decision-review","code-review","ux","workflow","quality-gate"]
+    }
+  ]
+}

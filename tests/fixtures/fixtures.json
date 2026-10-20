@@ -1,0 +1,328 @@
+{
+  "_comment": [
+    "Eval fixtures for elonify-critic. Inputs are materialized from local clones by tests/eval.mjs; nothing here is vendored code.",
+    "kind: positive = the team later deleted or cut what this target added (ground truth from history) — the critic must return CUT FIRST or REFRAME and name the cut.",
+    "kind: guardrail = the target contains a load-bearing guard that looks like overhead (a Chesterton's fence) — the critic must not propose cutting it. Contract metric: violations must be 0.",
+    "kind: clean = a small, well-aimed change (several are themselves deletions) — the critic should PROCEED without manufacturing cuts.",
+    "kind: live = no ground truth; the critic's findings on current repos are recorded and judged by a human.",
+    "request is the author's own statement of intent (commit message or PR title + opening, verbatim, truncated where long) or, for audits, the one-line ask a user would type. It never hints at the expected answer.",
+    "checkout is the commit the critic sees; it never includes the later history that supplies the ground truth."
+  ],
+  "repos": {
+    "jev-spike": {
+      "path": "/home/user/jev-spike",
+      "private": false
+    },
+    "pidgeon": {
+      "path": "/home/user/pidgeon",
+      "private": true
+    },
+    "kitctl": {
+      "path": "/home/user/connorbritain/kitctl",
+      "private": false
+    }
+  },
+  "fixtures": [
+    {
+      "name": "jev-setup-advisor",
+      "kind": "positive",
+      "repo": "jev-spike",
+      "mode": "diff",
+      "altitude": "code",
+      "checkout": "fe81d79ba7a5f0dbc4e60bff75cade555865253a",
+      "target": "git range fe81d79ba7a5f0dbc4e60bff75cade555865253a^..fe81d79ba7a5f0dbc4e60bff75cade555865253a",
+      "request": "Add Cuevani company-guided setup and focused source integrations\n\nFive official OAuth import adapters, one revocable form/CRM bridge, reviewable rulebook recommendations, and protected synthetic setup verification. Preserve all human approval and screening gates.",
+      "ground_truth": "27c0763 (7 minutes later): 'Simplify company setup to AI labels with trusted owner policy' — the model stops generating urgency_rule and company_context; the server keeps the owner's own inputs.",
+      "expect": {
+        "verdict": "CUT FIRST|REFRAME",
+        "cut_mentions": [
+          "urgency",
+          "company.?context",
+          "recommendation",
+          "advisor",
+          "rulebook.?(advice|proposal)"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-thin-portal",
+      "kind": "positive",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "ux",
+      "checkout": "cf3cc0fb71c4c7bdf6a7b1a8a102fdc0e32bd642",
+      "target": "git range cf3cc0fb71c4c7bdf6a7b1a8a102fdc0e32bd642^..cf3cc0fb71c4c7bdf6a7b1a8a102fdc0e32bd642",
+      "request": "P13-S3: Thin web portal — account, billing, usage, download\n\nAdmin-only web portal on pidgeon-site: account management with profile/team/API keys, Stripe billing with plan display and portal session, usage analytics dashboard with Recharts, platform-detect download page. Auth callback handles desktop pidgeon:// deep link redirect. Middleware guards protected routes. 5 tests.",
+      "ground_truth": "PR #2335 removed the marketing-site account, billing and usage pages (+21/−1413); the billing stubs never returned real data and the real portal lives in account/.",
+      "expect": {
+        "verdict": "CUT FIRST|REFRAME",
+        "cut_mentions": [
+          "billing",
+          "usage",
+          "account",
+          "portal",
+          "recharts"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-merge-union",
+      "kind": "positive",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "workflow",
+      "checkout": "02a8073e8fd2fe3e61325577900065a890660781",
+      "target": "git range 02a8073e8fd2fe3e61325577900065a890660781^..02a8073e8fd2fe3e61325577900065a890660781",
+      "request": "dispatch preflight guard: refuse unpushed / complete / empty-note ids (b47)\n\nImplements backlog b47 / slice preflight-guard (P1, docs/roadmap/roadmap.yaml § maintainability): a pre-fire preflight for `roadmap dispatch` that refuses to fire before the Routines API call on any of the three documented hard-failure conditions, printing the exact remediation, and never invoking the real dispatch on refusal.",
+      "ground_truth": "PR #2082 dropped the merge=union line this PR added to .gitattributes for backlog.yaml — it fused concurrent appends, corrupting the backlog four times and leaving main red for four merges. Hard case: the cut is one unrequested line in an otherwise reasonable diff.",
+      "expect": {
+        "verdict": "CUT FIRST|REFRAME",
+        "cut_mentions": [
+          "merge=union",
+          "\\bunion\\b",
+          "gitattributes"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-dead-hook",
+      "kind": "positive",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "workflow",
+      "checkout": "2acb697c6c0c076affad78624457e5c2fd205959",
+      "target": "git range 2acb697c6c0c076affad78624457e5c2fd205959^..2acb697c6c0c076affad78624457e5c2fd205959",
+      "request": "Add hooks, permission preauth, and MCP roadmap doc",
+      "ground_truth": "PR #173 removed post-edit-build-check.sh: it looked for a root Pidgeon.sln that never existed (the solution is pidgeon-cli/Pidgeon.sln), so it never ran a build — a process step that looked finished and did nothing.",
+      "expect": {
+        "verdict": "CUT FIRST|REFRAME",
+        "cut_mentions": [
+          "post-edit-build-check",
+          "Pidgeon\\.sln",
+          "\\.sln",
+          "dotnet build"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-bundled-console",
+      "kind": "positive",
+      "repo": "pidgeon",
+      "mode": "path",
+      "altitude": "ux",
+      "checkout": "9721efc509ae8deb3df7a9cfdb52ef1a0ddca28e",
+      "target": "path pidgeon-gui/ (the account portal app and the product routes bundled inside it)",
+      "request": "Run an elonify audit of pidgeon-gui/: what in this app should exist?",
+      "ground_truth": "PR #250 deleted the bundled Tauri Console from pidgeon-gui (+240/−22,615): its post/flock/loft/onboarding/settings routes duplicated the standalone apps, leaving pidgeon-gui as only the account portal.",
+      "expect": {
+        "verdict": "CUT FIRST|REFRAME",
+        "cut_mentions": [
+          "app/post",
+          "app/flock",
+          "app/loft",
+          "console",
+          "onboarding",
+          "settings"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-merge-revert-guard",
+      "kind": "guardrail",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "workflow",
+      "checkout": "74a1e265f9d022eba46b692430d6b60238401149",
+      "target": "git range 74a1e265f9d022eba46b692430d6b60238401149^..74a1e265f9d022eba46b692430d6b60238401149",
+      "request": "ci: fail a merge that would delete work already on main\n\nNew CI job merge-revert-guard fails a PR whose merge would delete lines main gained after the branch forked — the shape that silently reverted merged PRs on 2026-08-05, twice with a green suite because the branch carried away the tests along with the code. It does not depend on tests existing.",
+      "ground_truth": "Replaying history shows the guard would have caught a real silent revert (#2104); it is still live and load-bearing.",
+      "expect": {
+        "must_not_cut": [
+          "merge-revert-guard",
+          "revert.?guard"
+        ]
+      }
+    },
+    {
+      "name": "jev-no-auto-send",
+      "kind": "guardrail",
+      "repo": "jev-spike",
+      "mode": "path",
+      "altitude": "workflow",
+      "checkout": "54fa8d1b50e59d734bd55a29d651ff3d44851931",
+      "target": "path AGENTS.md (the working rules for agents in this repo)",
+      "request": "Run an elonify audit of AGENTS.md: which of these rules earn their place?",
+      "ground_truth": "The no-automatic-sending / no-automatic-rejection rule and human screening gates are a product and legal invariant (applicant decisions, customer messages).",
+      "expect": {
+        "must_not_cut": [
+          "auto(matic)?[- ]?(send|sending|reject)",
+          "human (approval|review|screening)",
+          "screening gate",
+          "blind"
+        ]
+      }
+    },
+    {
+      "name": "kitctl-sandbox",
+      "kind": "guardrail",
+      "repo": "kitctl",
+      "mode": "path",
+      "altitude": "code",
+      "checkout": "6f656f34f3757fe639a315bebefc3c311e7bc2c2",
+      "target": "path src/kitctl/engine.py",
+      "request": "Run an elonify audit of src/kitctl/engine.py: what here should not exist?",
+      "ground_truth": "The KITCTL_SANDBOX write refusal, journaled writes and the kit.lock ownership ledger are the safety core for a tool that edits users' live agent config.",
+      "expect": {
+        "must_not_cut": [
+          "KITCTL_SANDBOX",
+          "check_sandbox",
+          "\\bjournal",
+          "_commit_files",
+          "\\brecover\\b"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-retire-loft-types",
+      "kind": "clean",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "code",
+      "checkout": "ab09bc9cd7dc15abe1c5d8be5875d581b1b5e6b4",
+      "target": "git range ab09bc9cd7dc15abe1c5d8be5875d581b1b5e6b4^..ab09bc9cd7dc15abe1c5d8be5875d581b1b5e6b4",
+      "request": "refactor(loft): retire the legacy review/rule GUI shapes with no Bridge producer\n\napps/loft/src/lib/types/loft-healing.ts still exported ReviewItem (a Deviation + a RemediationRule), invented for the pre-Bridge GUI. loft-alert-kinds repointed loftStore.reviewItems at the real ReviewQueueEntry DTO (GET /api/loft/healing/queue), which left the shape with no producer and no reader. A repo-wide grep across apps/, packages/, account/, and the tests found five more exports in the same module failing the same check, so they go together.",
+      "ground_truth": "A small evidenced deletion (+15/−50). Nothing to cut first.",
+      "expect": {
+        "verdict": "PROCEED",
+        "max_cuts": 1
+      }
+    },
+    {
+      "name": "pidgeon-windows-lane",
+      "kind": "clean",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "workflow",
+      "checkout": "e220c7e31335252cf10409c7c0370b26ab200e75",
+      "target": "git range e220c7e31335252cf10409c7c0370b26ab200e75^..e220c7e31335252cf10409c7c0370b26ab200e75",
+      "request": "ci: stop paying for Windows on every PR (the 44% lane)\n\nCuts the largest line item in the Actions bill. One file, one condition. build-and-test-windows now runs on merge-to-main and on demand instead of on every PR.",
+      "ground_truth": "A one-condition change aimed squarely at the limiting factor (CI spend under a billing suspension) that keeps the 'router always runs' invariant rather than adding a draft skip.",
+      "expect": {
+        "verdict": "PROCEED",
+        "max_cuts": 1,
+        "must_not_cut": [
+          "workflow-routing",
+          "router"
+        ]
+      }
+    },
+    {
+      "name": "pidgeon-dead-hook-removal",
+      "kind": "clean",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "workflow",
+      "checkout": "5651072f1a1d863f3b2fc5393e86f87141347cde",
+      "target": "git range 5651072f1a1d863f3b2fc5393e86f87141347cde^..5651072f1a1d863f3b2fc5393e86f87141347cde",
+      "request": "chore: fix hook paths + remove dead post-edit build check\n\nFixes the hook \"not found\" noise that's been appearing on every Bash call across every agent session, and retires one hook that's been dead weight.",
+      "ground_truth": "Itself the deletion; keeps guard-dangerous-commands.sh, which catches variants the deny list misses.",
+      "expect": {
+        "verdict": "PROCEED",
+        "max_cuts": 1,
+        "must_not_cut": [
+          "guard-dangerous-commands"
+        ]
+      }
+    },
+    {
+      "name": "jev-fronts",
+      "kind": "live",
+      "repo": "jev-spike",
+      "mode": "path",
+      "altitude": "code",
+      "checkout": "54fa8d1b50e59d734bd55a29d651ff3d44851931",
+      "target": "path apps/fronts/ (seven per-vertical front apps) and how they are built",
+      "request": "Run an elonify audit of apps/fronts/: should these exist as they are?"
+    },
+    {
+      "name": "jev-workflow-api",
+      "kind": "live",
+      "repo": "jev-spike",
+      "mode": "diff",
+      "altitude": "code",
+      "checkout": "b2be1b83347c91f06b9f42f15cc8d989b9c21c75",
+      "target": "git range b2be1b83347c91f06b9f42f15cc8d989b9c21c75^..b2be1b83347c91f06b9f42f15cc8d989b9c21c75",
+      "request": "Add authenticated durable workflow API contract"
+    },
+    {
+      "name": "jev-direction",
+      "kind": "live",
+      "repo": "jev-spike",
+      "mode": "plan",
+      "altitude": "workflow",
+      "checkout": "54fa8d1b50e59d734bd55a29d651ff3d44851931",
+      "target": "plan docs/workflow-product-direction.md",
+      "request": "Elonify this plan before we build it: docs/workflow-product-direction.md"
+    },
+    {
+      "name": "jev-parallel-build",
+      "kind": "live",
+      "repo": "jev-spike",
+      "mode": "path",
+      "altitude": "workflow",
+      "checkout": "54fa8d1b50e59d734bd55a29d651ff3d44851931",
+      "target": "path docs/parallel-build.md and the build workflow it defines (claims, packets, waves, receipts, generated views)",
+      "request": "Run an elonify audit of our build workflow in docs/parallel-build.md: what steps should not exist?"
+    },
+    {
+      "name": "pidgeon-agent-docs",
+      "kind": "live",
+      "repo": "pidgeon",
+      "mode": "path",
+      "altitude": "workflow",
+      "checkout": "7cae0265cc8651d1994c2c9d77a441f803f6395a",
+      "target": "path CLAUDE.md and AGENTS.md (the always-loaded agent instructions)",
+      "request": "Run an elonify audit of CLAUDE.md and AGENTS.md: what should not be in here?"
+    },
+    {
+      "name": "pidgeon-ci-workflows",
+      "kind": "live",
+      "repo": "pidgeon",
+      "mode": "path",
+      "altitude": "workflow",
+      "checkout": "7cae0265cc8651d1994c2c9d77a441f803f6395a",
+      "target": "path .github/workflows/",
+      "request": "Run an elonify audit of .github/workflows/: which workflows and jobs should exist?"
+    },
+    {
+      "name": "pidgeon-first-run",
+      "kind": "live",
+      "repo": "pidgeon",
+      "mode": "diff",
+      "altitude": "ux",
+      "checkout": "afacd825b332ea122c22463be46ee7959e3fac6e",
+      "target": "git range afacd825b332ea122c22463be46ee7959e3fac6e^..afacd825b332ea122c22463be46ee7959e3fac6e",
+      "request": "feat(onboarding): one first-run shape across all six desktop apps (PID-1174)\n\nPublic beta launch overlay, Stage 1: \"a public beta user can complete one value loop in every app\". This PR gives every app the same first-run shape."
+    },
+    {
+      "name": "kitctl-plan",
+      "kind": "live",
+      "repo": "kitctl",
+      "mode": "plan",
+      "altitude": "code",
+      "checkout": "6f656f34f3757fe639a315bebefc3c311e7bc2c2",
+      "target": "plan PLAN.md (and docs/design.md, which it implements)",
+      "request": "Elonify this plan: PLAN.md. Are we building the right things in the right order?"
+    },
+    {
+      "name": "kitctl-cli",
+      "kind": "live",
+      "repo": "kitctl",
+      "mode": "path",
+      "altitude": "ux",
+      "checkout": "6f656f34f3757fe639a315bebefc3c311e7bc2c2",
+      "target": "path src/kitctl/cli.py (the command and flag surface users see)",
+      "request": "Run an elonify audit of the kitctl CLI surface in src/kitctl/cli.py: which commands and flags should exist?"
+    }
+  ]
+}

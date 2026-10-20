@@ -1,0 +1,58 @@
+# Harness metadata for the elonify-critic primitive (agent-primitives convention).
+# The prompt body lives in agents/elonify-critic.md and is shared verbatim across targets;
+# wiring/agents-md.md carries the same body for harnesses without agent files.
+
+name: elonify-critic
+kind: reviewer
+surface: agent
+bundle: elonify
+
+contract:
+  read_only: true            # a critic that can edit will cut instead of report
+  clean_context: true        # the reviewer must not be the author of the plan or diff
+  verdict: [PROCEED, CUT FIRST, REFRAME]
+  scope: [plan, diff, path]  # pre-build decision, post-build diff, or a surface audit
+  max_findings: 5
+  uncertainty_resolves_to: silence   # cuts must cite evidence; taste is not a finding
+  refuses:
+    - cutting a physics requirement (safety, security, legal, accessibility, data integrity) unilaterally
+    - findings owned by verification-critic or architecture-reviewer
+  ordered_method: true       # requirements -> delete -> simplify -> accelerate -> automate
+
+harness:
+  claude-code:
+    enforcement: enforced
+    model: sonnet
+    color: blue
+    tools:
+      - Read
+      - Grep
+      - Glob
+      - Bash(git diff:*)
+      - Bash(git log:*)
+      - Bash(git show:*)
+      - Bash(git status:*)
+      - Bash(git ls-files:*)
+    notes: >-
+      Full contract. The opt-in Stop hook (hooks/elonify-hook.mjs) turns the protocol rule
+      into a once-per-stop block on unreviewed work or an unaddressed CUT FIRST / REFRAME.
+      git log access matters: the Chesterton's-fence check is only as good as the history
+      search behind it.
+
+  cursor:
+    enforcement: partial
+    model: sonnet
+    notes: >-
+      Agent file and skill are read; the tool restriction degrades to prose and the Stop
+      hook is not wired.
+
+  codex:
+    enforcement: advisory
+    notes: >-
+      No subagents and no turn-blocking. Run the wiring/agents-md.md prompt as a fresh
+      `codex exec` subprocess against the plan or diff; inline use reviews its own framing.
+
+  agents-md:
+    enforcement: advisory
+    notes: >-
+      The prompt ports; enforcement does not. Use a fresh session or a CI job.

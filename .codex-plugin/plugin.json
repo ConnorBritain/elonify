@@ -1,0 +1,25 @@
+{
+  "name": "elonify",
+  "version": "0.1.0",
+  "description": "A first-principles critic: question requirements, delete, then simplify, accelerate, automate.",
+  "author": { "name": "Connor England", "url": "https://github.com/ConnorBritain" },
+  "homepage": "https://github.com/ConnorBritain/elonify",
+  "repository": "https://github.com/ConnorBritain/elonify",
+  "license": "MIT",
+  "keywords": ["first-principles","simplicity","deletion","scope","yagni","decision-review","code-review","ux","workflow","quality-gate"],
+  "skills": "skills",
+  "interface": {
+    "displayName": "Elonify",
+    "shortDescription": "Asks whether the work should exist, and what to cut before building more.",
+    "longDescription": "A read-only critic that applies Musk's five-step algorithm in order — make requirements less dumb, delete, simplify, accelerate, automate — to a plan before building or a diff after. It names the limiting factor, traces requirements to an owner, and returns at most five evidenced cuts with reversibility and add-back triggers, ending in PROCEED, CUT FIRST, or REFRAME. NOTE: Codex enforces neither the read-only restriction nor turn-blocking, and has no subagents; run the prompt in wiring/agents-md.md as a fresh `codex exec` subprocess against the plan or diff rather than inline.",
+    "developerName": "Connor England",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive"],
+    "websiteURL": "https://github.com/ConnorBritain/elonify",
+    "defaultPrompt": [
+      "Elonify this plan before I build it",
+      "Elonify the current diff — what should not exist?",
+      "Audit this workflow for steps to delete"
+    ]
+  }
+}

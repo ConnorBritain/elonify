@@ -1,0 +1,10 @@
+{
+  "name": "elonify",
+  "version": "0.1.0",
+  "description": "A first-principles critic for decisions and diffs: questions every requirement back to a named owner, then deletes before it simplifies, accelerates, or automates (Musk's algorithm, in order). Works before building (plans) and after (diffs), at code, UI/UX, and workflow altitude. Optional Stop hook.",
+  "author": { "name": "Connor England", "url": "https://github.com/ConnorBritain" },
+  "repository": "https://github.com/ConnorBritain/elonify",
+  "license": "MIT",
+  "keywords": ["first-principles","simplicity","deletion","scope","yagni","decision-review","code-review","ux","workflow","quality-gate"],
+  "agents": ["./agents/elonify-critic.md"]
+}
